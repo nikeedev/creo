@@ -30,7 +30,7 @@ class Box {
     }
 }
 
-const box = new Box(120, 120, 60, 60,  "#f1cb50");
+const box = new Box(120, 120, 60, 60, "cornflowerblue");
 
 
 let oldTimeStamp;
@@ -50,9 +50,20 @@ const gameLoop = (timeStamp) =>
 
 window.requestAnimationFrame(gameLoop);
 
-const speed = 250;
+const speed = 100;
+
+let vel = {
+    x: 0,
+    y: 0
+}
+
+let time = 0.0;
+let dt = 1.0 / 60.0;
+
+let onground = false;
 
 function update(ts) {
+
 
     if (box.y <= 0) {
         box.y = 1;
@@ -60,30 +71,38 @@ function update(ts) {
 
     if (box.y + box.height >= canvas.height ) {
         box.y = canvas.height - box.height - 1;
+        onground = true;
     }
 
-    console.log(box)
     if (box.x + box.width >= canvas.width ) {
         box.x = canvas.width - box.width - 1;
     }
-
     if (box.x <= 0) {
         box.x = 1;
     }
 
-    if (IsKeyClicked("ArrowUp"))
-        box.y -= speed * ts;
-
-    if (IsKeyClicked("ArrowDown"))
-        box.y += speed * ts;
-
-    if (IsKeyClicked("ArrowLeft"))
-        box.x -= speed * ts;
-
-    if (IsKeyClicked("ArrowRight"))
-        box.x += speed * ts;
-
+    
+    if (!onground) {
+        vel.y = 10 * time;
+    } else {
+        vel.y = 0;
+    }
+    
+    if (IsKeyClicked("ArrowUp") && onground) {
+        console.log("done")
+        vel.y = time * -120;
+        onground = false;
+    }
+    
+    
+    vel.x = !IsKeyClicked("ArrowRight") ? (!IsKeyClicked("ArrowLeft") ? 0 : -speed*ts) : speed*ts;
+    
+    box.y += vel.y;
+    box.x += vel.x;
+    
     box.render(ctx);
+    
+    time += dt;
 }
 
 let keysPressed = {}

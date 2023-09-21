@@ -4,7 +4,7 @@ We can create a type json which info about STATUS, it has the DATA, and the user
 
 Example: a user joined: 
 
-```json
+```jsonc
 {
     "status": "join",
     "username": "Foo",
@@ -14,7 +14,7 @@ Example: a user joined:
 
 Example: a user : 
 
-```json
+```jsonc
 {
     "status": "join",
     "username": "Foo",

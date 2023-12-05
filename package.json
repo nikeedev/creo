@@ -1,5 +1,14 @@
 {
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "name": "creo",
+  "description": "",
+  "version": "1.0.0",
+  "main": "server.js",
   "dependencies": {
-    "express": "^4.18.2"
-  }
+    "ws": "^8.14.2"
+  },
+  "author": "nikeedev",
+  "license": "MIT"
 }

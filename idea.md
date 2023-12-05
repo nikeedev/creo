@@ -12,11 +12,11 @@ Example: a user joined:
 }
 ```
 
-Example: a user : 
+Example: a user left: 
 
 ```jsonc
 {
-    "status": "join",
+    "status": "left",
     "username": "Foo",
     // "data" value won't be required as it wont be used. 
 }

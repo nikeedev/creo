@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creo</title>
+    <style>
+        * {
+            font-family: monospace;
+        }
+    </style>
 </head>
 <body>
-    <canvas id="canvas" style="border: 2px solid cornflowerblue;"></canvas>
-    <script type=module src="script.js"></script>
+    <p id="namep">Player name: <input type="text" value="Player1" placeholder="Your player name" id="playername"></p>
+    <p id="colorp">Color (css name or hex): <input type="text" value="cornflower" placeholder="Color" id="color"></p>
+    <button id="btn" onclick="run()">Join</button>
+    <canvas id="canvas" style="border: 2px solid cornflowerblue; display: none;"></canvas>
+    <script src="script.js"></script>
 </body>
 </html>

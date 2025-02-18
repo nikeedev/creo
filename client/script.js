@@ -65,6 +65,35 @@ const run = () => {
     let wss = new WebSocket("ws://127.0.0.1:8800");
 
     let once = false;
+
+    wss.onmessage = (e) => {
+        // console.log(e.data);
+        let message = JSON.parse(e.data);
+        console.log(message);
+
+        switch (message.status) {
+            case "join":
+                players[message.username] = { x: message.data.x, y: message.data.y, color: message.data.color }
+                break;
+
+            case "update":
+                players[message.username] = { x: message.data.x, y: message.data.y, color: message.data.color }
+                break;
+
+            case "leave":
+                delete players[message.username];
+                break;
+
+            case "list":
+                // console.log(message.data);
+                players = message.data;
+                break;
+
+            default:
+                break;
+        }
+    }
+
     wss.onopen = () => {
         if (!once) {
             wss.send(
@@ -129,13 +158,14 @@ const run = () => {
                 );
             }
             
-            player.forEach {
-                ctx.fillStyle = players[player].color;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillRect(players[player].x, players[player].y, players[player].width, players[player].height);
-                ctx.fillText(players[player].username, players[player].x + 5 + players[player].username.length, players[player].y + players[player].height + 10)
-            });
             box.render(ctx);
+            
+            players.forEach((player) => {
+                ctx.fillStyle = player.color;
+                // ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+                ctx.fillText(player.username, player.x + 5 + player.username.length, player.y + player.height + 10);
+            });
 
             window.requestAnimationFrame(update);
         }
@@ -149,33 +179,6 @@ const run = () => {
             // console.log(closing_message);
             // console.log(ws);
             console.error(closing_message);
-        }
-    }
-
-    wss.onmessage = (e) => {
-        // console.log(e.data);
-        let message = JSON.parse(e.data);
-
-
-        switch (message.status) {
-            case "join":
-                players[message.username] = { x: message.data.x, y: message.data.y, color: message.data.color }
-                break;
-
-            case "update":
-                players[message.username] = { x: message.data.x, y: message.data.y, color: message.data.color }
-                break;
-
-            case "leave":
-                delete players[message.username];
-                break;
-
-            case "list":
-                players = message.data.map(player => { return { username: player, x: 20, y: 20, color: "black"} });
-                break;
-
-            default:
-                break;
         }
     }
 

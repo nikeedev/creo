@@ -5,7 +5,8 @@ const wss = new WebSocketServer({ port: 8800 });
 /** @type {Array<WebSocket>} */
 let clients = [];
 
-wss.on('connection', function connection(ws) {
+wss.on('connection', (ws) => {
+    console.log(clients.map(client => client.data));
     ws.send(JSON.stringify(
         {
             status: "list",
@@ -15,15 +16,15 @@ wss.on('connection', function connection(ws) {
 
     ws.on('error', console.error);
 
-    ws.on('message', function message(data) {
-        console.log(clients);
+    ws.on('message', (data) => {
+        // console.log(clients);
         let message = JSON.parse(data);
 
         console.log(message)
         
         switch (message.status) {
             case "join":
-                ws.data = message;
+                ws.data = { username: message.username, x: message.data.x, y: message.data.y, color: message.data.color };
                 clients.push(ws);
 
                 clients.forEach(client => {

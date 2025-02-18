@@ -12,7 +12,7 @@ wss.on('connection', (ws) => {
             status: "list",
             data: clients.map(client => client.data),
         }
-    ));   
+    ));
 
     ws.on('error', console.error);
 
@@ -21,7 +21,7 @@ wss.on('connection', (ws) => {
         let message = JSON.parse(data);
 
         console.log(message)
-        
+
         switch (message.status) {
             case "join":
                 ws.data = { username: message.username, x: message.data.x, y: message.data.y, color: message.data.color };
@@ -33,7 +33,7 @@ wss.on('connection', (ws) => {
                     }
                 })
                 break;
-        
+
             case "update":
                 clients.forEach(client => {
                     if (!client.data.username == message.username) {
@@ -41,7 +41,7 @@ wss.on('connection', (ws) => {
                     }
                 })
                 break;
-                
+
             case "leave":
                 clients.forEach(client => {
                     if (!client.data.username == message.username) {
@@ -52,11 +52,11 @@ wss.on('connection', (ws) => {
                     }
                 })
                 break;
-            
+
             default:
                 break;
         }
-        
+
         ws.on("close", () => {
             ws.send(JSON.stringify(
                 {
@@ -67,4 +67,10 @@ wss.on('connection', (ws) => {
             clients.splice(clients.indexOf(ws), 1);
         })
     });
+});
+
+process.on('SIGINT', () => {
+    console.log("\shutting down from SIGINT (Ctrl-C)");
+    // some other closing procedures go here
+    process.exit(0);
 });
